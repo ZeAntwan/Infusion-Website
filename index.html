@@ -5,23 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infusion</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+    <script src="https://embed.twitch.tv/embed/v1.js"></script>
 </head>
 <body>
-    <div id="landing">
+    <header id="landing">
         <div id="paralax">
-            <div data-depth="0.6"><img src="img/ident-layers/Layer4.png" alt=""></div>
-            <div data-depth="0.7"><img src="img/ident-layers/Layer3.png" alt=""></div>
-            <div data-depth="0.8"><img src="img/ident-layers/Layer2.png" alt=""></div>
-            <div data-depth="0.9"><img src="img/ident-layers/Layer1.png" alt=""></div>
-            <div data-depth="1.0"><img src="img/ident-layers/Layer0.png" alt=""></div>
+            <div id="paralax-items">
+                <div data-depth="0.6"><img src="img/ident-layers/Layer4.png" alt=""></div>
+                <div data-depth="0.7"><img src="img/ident-layers/Layer3.png" alt=""></div>
+                <div data-depth="0.8"><img src="img/ident-layers/Layer2.png" alt=""></div>
+                <div data-depth="0.9"><img src="img/ident-layers/Layer1.png" alt=""></div>
+                <div data-depth="1.0"><img src="img/ident-layers/Layer0.png" alt=""></div>
+            </div>
+            <nav id="social">
+                <ul>
+                    <li><i class="fab fa-youtube fa-3x"></i></li>
+                    <li><i class="fab fa-twitch fa-3x"></i></li>
+                    <li><i class="fab fa-twitter fa-3x"></i></li>
+                </ul>
+            </nav>
         </div>
-        <!--<div id="player">Player</div>-->
-    </div>
+        
+        <div id="player"></div>
+    </header>
+
+    <section id="about">
+        <h2>About</h2>
+    </section>
+
+    <section id="members">
+    <h2>Membres</h2>
+    </section>
+
+    <section id="contact">
+    <h2>Contact</h2>
+    </section>
+    
 </body>
 <script>
-    var scene = document.getElementById('paralax');
+    var scene = document.getElementById('paralax-items');
     var parallaxInstance = new Parallax(scene);
-    parallaxInstance.scalar(3, 3)
+    parallaxInstance.scalar(3, 3);
+    new Twitch.Embed("player", {
+        width: 854,
+        height: 480,
+        channel: "monstercat",
+        layout: "video"
+      });
 </script>
 </html>

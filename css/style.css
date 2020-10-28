@@ -1,16 +1,64 @@
 /* General Stuff */
 body {
     margin: 0;
+    background: #f2c5d8;
+    font-family: 'Baloo Thambi 2', cursive;
 }
 
 /* Landing and Paralaxe zone */
 #landing {
     background: #f2c5d8;
-    height: 100vh;
 }
 
 #paralax {
-    margin: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+    flex: 1;
+    margin-top: -150px;
     overflow: hidden;
+    justify-content: center;
+    align-items: center;
+}
+
+#paralax-items {
+    width: 35vw;
+    height: 25vw;
+}
+
+#paralax-items img {
+    width: 100%;
+}
+
+#social {
+    z-index: 50;
+    color: #fbdf8b;
+    text-shadow: #70c0af 1px 1px 0px, #70c0af 2px 2px 0px, #70c0af 3px 3px 0px;
+}
+
+#social ul{
+    display: flex;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#social li {
+    padding: 0 50px;
+}
+
+#player {
+    text-align: center;
+    z-index: 1;
+    padding: 0 50px 50px 50px;
+}
+
+/* Article and section stuff */
+section {
+    padding: 25px;
+}
+
+article {
+    display: flex;
 }
 
