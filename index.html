@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infusion</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js"></script>
+</head>
+<body>
+    <div id="landing">
+        <div id="paralax">
+            <div data-depth="0.6"><img src="img/ident-layers/Layer4.png" alt=""></div>
+            <div data-depth="0.7"><img src="img/ident-layers/Layer3.png" alt=""></div>
+            <div data-depth="0.8"><img src="img/ident-layers/Layer2.png" alt=""></div>
+            <div data-depth="0.9"><img src="img/ident-layers/Layer1.png" alt=""></div>
+            <div data-depth="1.0"><img src="img/ident-layers/Layer0.png" alt=""></div>
+        </div>
+        <!--<div id="player">Player</div>-->
+    </div>
+</body>
+<script>
+    var scene = document.getElementById('paralax');
+    var parallaxInstance = new Parallax(scene);
+    parallaxInstance.scalar(3, 3)
+</script>
+</html>

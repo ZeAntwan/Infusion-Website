@@ -1,0 +1,16 @@
+/* General Stuff */
+body {
+    margin: 0;
+}
+
+/* Landing and Paralaxe zone */
+#landing {
+    background: #f2c5d8;
+    height: 100vh;
+}
+
+#paralax {
+    margin: auto;
+    overflow: hidden;
+}
+
