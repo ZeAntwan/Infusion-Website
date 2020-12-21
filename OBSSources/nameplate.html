@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infusion Nameplate - </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500&family=Nerko+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+        }
+        div.tick {
+            width: 10px;
+            height: 10px;
+            transform: rotate(45deg);
+            position: absolute;
+            right: 15%;
+            top: -10px;
+            background: white;
+            margin : auto;
+            border-left: solid #19BA9B 5px;
+            border-right: solid transparent 5px;
+            border-bottom: solid transparent 5px;
+            border-top: solid #19BA9B 5px;
+            z-index: 1;
+            display: block;
+        }
+        div.nameplate {
+            position: relative;
+            font-family: "Nerko One";
+            margin: 20px 0 0 0;
+            padding: 0 10px;
+            font-weight: normal;
+            color: #19BA9B;
+            border: solid #19BA9B 5px;
+            border-radius: 20px 20px 20px 5px;
+            /*border: solid 50px;
+            border-image: url(border2.png) 50 repeat;*/
+            display: inline-block;
+            min-width: 200px;
+            text-align: center;
+            font-size: 2em;
+            background: white;
+        }
+        h2 {
+            display: inline;
+            font-size: 1em;
+            font-weight: normal;
+            z-index: 100;
+        }
+        span {
+            font-family: 'M PLUS Rounded 1c';
+            font-size: .6em;
+            margin-left: 5px;
+            font-weight: 500;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nameplate">
+    <div class="tick"></div>
+    <h2 id="name">UserName</h2>
+    <span id="pro">(iel)</span>
+</div>
+</body>
+<script>    
+    function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+    
+    name = decodeURI(getUrlVars()["name"]);
+    
+    pro = decodeURI(getUrlVars()["pro"]);
+
+    align = decodeURI(getUrlVars()["align"]);
+
+    if (name != "undefined" & name != undefined) {
+        $("#name").html(name)
+    }
+
+    if (pro != "undefined" & pro != undefined) {
+        console.log(pro);
+        switch (pro) {
+            case "m":
+                p = "il"; 
+                break;
+            case "nbm":
+                p = "iel";
+                break;
+            case "f":
+                p = "elle";
+                break;
+            case "nbf":
+                p = "ael";
+                break;
+            default:
+                p = ""
+        }
+        if (pro != "") {
+            $("#pro").html("(" + p + ")");
+        } else {
+            $("#pro").remove();
+        }
+    } else {
+        $("#pro").remove();
+    }
+
+    if (align != "undefined" & align != undefined) {
+        console.log(align);
+        switch (align) {
+            case "l":
+                
+                break;
+            case "r":
+                
+                break;
+            default:
+
+                break;
+            
+        }
+        if (pro != "") {
+            //$("#pro").html("(" + p + ")");
+        } else {
+            //$("#pro").remove();
+        }
+    } else {
+        //$("#pro").remove();
+    }
+</script>
+</html>
