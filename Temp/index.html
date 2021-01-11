@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/all.min.css">
+    <title>Infusion</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ff978c;
+        }
+        
+        .parent {
+          position: absolute;
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          align-content: center;
+        }
+        .child {
+            display: block;
+            max-width: 90vw;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 50vw;
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+        }
+
+        ul li {
+            flex: auto;
+            padding : 10px 0
+        }
+
+        ul li a {
+            color: #d85e5b;
+        }
+        
+        @media screen and (max-width: 800px) {
+            .logo {
+                width: 80vw;
+            }
+        }
+    </style>
+</head>
+
+<body>
+   <div class="parent">
+       <div class="child">
+        <img class="logo" src="logo.png" alt="Stuffmaker Company Logo">
+        <div class="child">
+            <ul>
+                <li><a href="http://twitter.infusioninc.fr"><i class="fab fa-twitter fa-5x"></i></a></li>
+                <li><a href="http://instagram.infusioninc.fr"><i class="fab fa-instagram fa-5x"></i></a></li>
+                <li><a href="http://youtube.infusioninc.fr"><i class="fab fa-youtube fa-5x"></i></a></li>
+                <li><a href="http://twitch.infusioninc.fr"><i class="fab fa-twitch fa-5x"></i></a></li>
+            </ul>
+        </div>
+       </div>
+   </div>
+</body>
+</html>

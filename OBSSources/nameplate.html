@@ -12,18 +12,18 @@
             text-align: center;
         }
         div.tick {
-            width: 10px;
-            height: 10px;
+            width: 20px;
+            height: 20px;
             transform: rotate(45deg);
             position: absolute;
             right: 15%;
-            top: -10px;
+            top: -18px;
             background: white;
             margin : auto;
-            border-left: solid #19BA9B 5px;
-            border-right: solid transparent 5px;
-            border-bottom: solid transparent 5px;
-            border-top: solid #19BA9B 5px;
+            border-left: solid #19BA9B 8px;
+            border-right: solid transparent 8px;
+            border-bottom: solid transparent 8px;
+            border-top: solid #19BA9B 8px;
             z-index: 1;
             display: block;
         }
@@ -31,11 +31,11 @@
             position: relative;
             font-family: "Nerko One";
             margin: 20px 0 0 0;
-            padding: 0 10px;
+            padding: 0 50px;
             font-weight: normal;
             color: #19BA9B;
-            border: solid #19BA9B 5px;
-            border-radius: 20px 20px 20px 5px;
+            border: solid #19BA9B 8px;
+            border-radius: 40px 40px 40px 10px;
             /*border: solid 50px;
             border-image: url(border2.png) 50 repeat;*/
             display: inline-block;
@@ -46,14 +46,14 @@
         }
         h2 {
             display: inline;
-            font-size: 1em;
+            font-size: 2em;
             font-weight: normal;
             z-index: 100;
         }
         span {
             font-family: 'M PLUS Rounded 1c';
-            font-size: .6em;
-            margin-left: 5px;
+            font-size: 1em;
+            margin: 0 0 0 px;
             font-weight: 500;
             z-index: 100;
         }
@@ -87,7 +87,6 @@
     }
 
     if (pro != "undefined" & pro != undefined) {
-        console.log(pro);
         switch (pro) {
             case "m":
                 p = "il"; 
@@ -102,9 +101,10 @@
                 p = "ael";
                 break;
             default:
-                p = ""
+                p = "";
+                break;
         }
-        if (pro != "") {
+        if (p != "") {
             $("#pro").html("(" + p + ")");
         } else {
             $("#pro").remove();
