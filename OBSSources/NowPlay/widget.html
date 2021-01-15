@@ -34,25 +34,33 @@
             console.log(info);
 
             if(info[0] != '') {
-                $('#track').html(info[0]);
+                $('#track').html(shortText(info[0]));
             } else {
                 $('#track').html("Track");
             };
 
             if(info[1] != '') {
-                $('#album').html(info[1]);
+                $('#album').html(shortText(info[1]));
             } else {
                 $('#album').html("Album");
             }
 
             if(info[2] != '') {
-                $('#artist').html(info[2]);
+                $('#artist').html(shortText(info[2]));
             } else {
                 $('#artist').html("Artist");
             }
 
             $("#artwork img").attr('src', 'cover.png' + '?' + new Date().getTime())
         };
+
+        function shortText(str) {
+            if (str.length > 43) {
+                return (jQuery.trim(str).substring(0, 43) + "...");
+            } else {
+                return str;
+            }
+        }
 
         function infoUpdate() {
             info = getNewInfo()
@@ -160,7 +168,7 @@
         color: #d85e5b;
         height: 100vh;
         overflow: hidden;
-        background: black;
+        /*background: black;*/
     }
     article {
         font-size: .8em;
