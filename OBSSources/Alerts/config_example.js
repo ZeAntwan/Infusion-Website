@@ -1,0 +1,6 @@
+export default {
+    TWITCH_USER_ID: 606333897,
+    TWITCH_CLIENT_ID: "",
+    TWITCH_SECRET_ID: "",
+    TWITCH_BEARER_TOKEN: "",
+}

@@ -1,0 +1,210 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>NowPlayingWidget</title>
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500&family=Nerko+One&display=swap" rel="stylesheet">
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <script type="module">
+        import config from './config.js'
+        import { TwitchInterface } from './interface_twitch.js'
+
+        var twitchInterface = new TwitchInterface(
+            config.TWITCH_CLIENT_ID,
+            config.TWITCH_SECRET_ID,
+            config.TWITCH_BEARER_TOKEN);
+
+        var isShown = false;
+
+        var messageStack = []
+        
+        //twitchInterface.getUsersFromName(["infusion_inc_"], (res) => { console.log(res) } )
+        
+        function updateText(newText) {
+            $('#info').html(newText);
+        }
+
+        function onEndMessageTime() {
+            if (messageStack.length > 0) {
+                $("#info").animate({
+                    opacity: 0
+                }, {
+                    complete: () => {
+                        let firstMsg = messageStack.shift();
+                        updateText(firstMsg);
+                        $("#info").animate({
+                            opacity: 1
+                        });
+                    }
+                })
+            }
+            else {
+                animate(false);
+            }
+        }
+
+        function onNewMessage() {
+            if (!isShown) {
+                let firstMsg = messageStack.shift();
+                updateText(firstMsg);
+                animate(true);
+                setTimeout(onEndMessageTime, 10000);
+            }
+            else {
+                
+            }
+        }
+
+        setInterval(
+            () => {
+                twitchInterface.watchNewFollowers(
+                    config.TWITCH_USER_ID,
+                    (newFollower) => {
+                        console.log(newFollower)
+                        messageStack.push(`${newFollower.from_name} vient de suivre la chaine <3`)
+                        onNewMessage();
+                    });
+            },
+            5000
+        );
+        
+        function animate(b) {
+            if (b) {
+                isShown = true;
+                $("article").animate({
+                    bottom: '0%'
+                }, {
+                    duration: 500,
+                    complete: () => {
+                        $("#bandeau").animate({
+                            left: '0%'
+                        }, {
+                            duration: 500,
+                        });
+                    }
+                });
+                
+            } else {
+                isShown = false;
+                $("#bandeau").animate({
+                    left: '-100%'
+                }, {
+                    duration: 500,
+                    complete: () => {
+                        $("article").animate({
+                            bottom: '-100%'
+                        }, {
+                            duration: 500,
+                        });
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            
+        });
+    </script>
+    <style>
+        article {
+            position: absolute;
+            display: flex;
+            bottom: -100%;
+            left: 0%;
+            vertical-align: middle;
+            align-items: center;
+        }
+
+        #metadata {
+            padding: 10px 160px;
+            align-items: center;
+            display: block;
+        }
+
+        #metabloc {
+            background-color: #FFFCE2;
+            vertical-align: middle;
+            opacity: 1;
+            width: fit-content;
+            display: flex;
+            margin-left: -125px;
+            font-family: "Nerko One";
+            color: #19BA9B;
+            font-size: 4em;
+        }
+
+        #side {
+            position: relative;
+            display: block;
+        }
+
+        #logo {
+            filter: drop-shadow(0 0 0.75rem #acac97);
+            z-index: 100;
+            animation-duration: 10s;
+            animation-name: roll;
+            animation-iteration-count: infinite;
+        }
+
+        #bandeau-wrapper {
+            clip-path: inset(0px 0px 0px -125px);
+        }
+
+        #bandeau {
+            position: relative;
+            left: -100%;
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-auto-rows: minmax(100px, auto);
+        }
+
+        @keyframes roll {
+            from {
+                transform: rotate(0deg);
+            }
+
+            2% {
+                transform: rotate(-10deg);
+            }
+            
+            20% {
+                transform: rotate(740deg);
+            }
+
+            22% {
+                transform: rotate(715deg);
+            }
+
+            24% {
+                transform: rotate(720deg);
+            }
+
+            to {
+                transform: rotate(720deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <article>
+        <div id="logo"><img src="LogoInfusion-Etiquette.png" alt=""></div>
+        <div id="bandeau-wrapper">
+            <div id="bandeau">
+                <div id="metabloc">
+                    <div id="metadata">
+                        <div id="info" class="metadata">Sitram il devrait aller dodo surtout</div>
+                    </div>
+                </div>
+                <div id="side"><img src="PanelSide.png" alt=""></div>
+            </div>
+        </div>
+    </article>
+</body>
+</html>
