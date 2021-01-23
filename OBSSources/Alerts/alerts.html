@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500&family=Nerko+One&display=swap" rel="stylesheet">
     
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="tmi.js"></script>
 
     <script type="module">
         import config from './config.js'
@@ -20,6 +21,13 @@
             config.TWITCH_CLIENT_ID,
             config.TWITCH_SECRET_ID,
             config.TWITCH_BEARER_TOKEN);
+        
+        const client = new tmi.Client({
+            options: { debug: true, messagesLogLevel: "info" },
+            connection: { reconnect: true },
+            channels: [ 'infusion_inc_' ]
+        });
+        client.connect().catch(console.error);
 
         var isShown = false;
 
@@ -27,6 +35,22 @@
         
         //twitchInterface.getUsersFromName(["infusion_inc_"], (res) => { console.log(res) } )
         
+        /*
+        Function to reset CSS animation state.
+        Stolen code from https://stackoverflow.com/a/45036752
+        */
+        function resetAnimation(elmtId) {
+            var el = document.getElementById(elmtId);
+            el.style.animation = 'none';
+            el.offsetHeight; /* trigger reflow */
+            el.style.animation = null; 
+        }
+
+        function sendMessage(msg) {
+            messageStack.push(msg);
+            onNewMessage();
+        }
+
         function updateText(newText) {
             $('#info').html(newText);
         }
@@ -34,13 +58,14 @@
         function onEndMessageTime() {
             if (messageStack.length > 0) {
                 $("#info").animate({
-                    opacity: 0
+                    opacity: 0.
                 }, {
                     complete: () => {
                         let firstMsg = messageStack.shift();
                         updateText(firstMsg);
+                        setTimeout(onEndMessageTime, 10000);
                         $("#info").animate({
-                            opacity: 1
+                            opacity: 1.
                         });
                     }
                 })
@@ -66,10 +91,12 @@
             () => {
                 twitchInterface.watchNewFollowers(
                     config.TWITCH_USER_ID,
-                    (newFollower) => {
-                        console.log(newFollower)
-                        messageStack.push(`${newFollower.from_name} vient de suivre la chaine <3`)
-                        onNewMessage();
+                    (newFollowers) => {
+                        for (let i in newFollowers) {
+                            let user = newFollowers[i];
+                            console.log(user)
+                            sendMessage(`${user.from_name} vient de suivre la chaine 💖`);
+                        }
                     });
             },
             5000
@@ -78,35 +105,83 @@
         function animate(b) {
             if (b) {
                 isShown = true;
-                $("article").animate({
-                    bottom: '0%'
-                }, {
-                    duration: 500,
-                    complete: () => {
-                        $("#bandeau").animate({
-                            left: '0%'
-                        }, {
-                            duration: 500,
-                        });
-                    }
-                });
                 
+                resetAnimation("logo");
+                $("#logo").css("animation-play-state", "running");
+                
+                setTimeout(
+                    () => {
+                        $("#logo").animate({
+                            opacity: 0
+                        }, {
+                            complete: () => {
+                                $("#logo img").attr("src", "LogoInfusion-Etiquette.png");
+                                $("#logo").animate({
+                                    opacity: 1
+                                }, {
+                                    complete: () => {
+                                        $("article").animate({
+                                            bottom: '0%'
+                                        }, {
+                                            duration: 500,
+                                            complete: () => {
+                                                $("#bandeau").animate({
+                                                    left: '0%'
+                                                }, {
+                                                    duration: 500,
+                                                });
+                                            }
+                                        });
+                                    }
+                                })
+                            }
+                        })
+                    },
+                    500
+                )
             } else {
                 isShown = false;
+
+                resetAnimation("logo");
+                $("#logo").css("animation-play-state", "running");
+
                 $("#bandeau").animate({
-                    left: '-100%'
+                    left: '-150%'
                 }, {
                     duration: 500,
                     complete: () => {
-                        $("article").animate({
+                        $("#logo").animate({
+                            opacity: 0
+                        }, {
+                            complete: () => {
+                                $("#logo img").attr("src", "TasseHD_02.png");
+                                $("#logo").animate({
+                                    opacity: 1
+                                })
+                            }
+                        })
+                        /*$("article").animate({
                             bottom: '-100%'
                         }, {
                             duration: 500,
-                        });
+                        });*/
                     }
                 });
             }
         }
+
+        client.on('message', (channel, tags, message, self) => {
+            if (tags['display-name'] == "DiFFtY") {
+                console.log(message)
+                if (message.startsWith("[DEBUG]")) {
+                    sendMessage(`${message.trim().replace("[DEBUG]","").trim()}`)
+                }
+            }
+        });
+
+        client.on('raided', (channel, username, viewers) => {
+            sendMessage(`${username} et ${viewers} personnes viennent de nous raid 💖`)
+        });
 
         $(document).ready(function () {
             
@@ -116,7 +191,7 @@
         article {
             position: absolute;
             display: flex;
-            bottom: -100%;
+            bottom: 0%; /* bottom: -100%; */
             left: 0%;
             vertical-align: middle;
             align-items: center;
@@ -125,7 +200,15 @@
         #metadata {
             padding: 10px 160px;
             align-items: center;
-            display: block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #info {
+            width:100%;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         #metabloc {
@@ -137,32 +220,54 @@
             margin-left: -125px;
             font-family: "Nerko One";
             color: #19BA9B;
-            font-size: 4em;
+            font-size: 3em;
+            max-width: 95vw;
+            line-height: 0.90;
         }
 
         #side {
             position: relative;
             display: block;
+            height:100%;
+        }
+
+        #side img {
+            display: block;
+            max-height:100%;
         }
 
         #logo {
-            filter: drop-shadow(0 0 0.75rem #acac97);
+            filter: drop-shadow(0 0 0.75rem #6e817a);
             z-index: 100;
-            animation-duration: 10s;
+            animation-duration: 2s;
             animation-name: roll;
-            animation-iteration-count: infinite;
+            animation-iteration-count: 1;
+            animation-play-state: paused;
+        }
+
+        #logo img {
+            /*width: 210;*/
+            height: 15vh;
         }
 
         #bandeau-wrapper {
-            clip-path: inset(0px 0px 0px -125px);
+            clip-path: inset(0px -200px 0px -100px);
         }
 
         #bandeau {
             position: relative;
-            left: -100%;
+            left: -150%;
             display: grid;
             grid-template-columns: auto auto;
             grid-auto-rows: minmax(100px, auto);
+            height: 10vh;
+            /*
+            padding-right: 155px;
+            background-image: url('PanelSide.png');
+            background-repeat: no-repeat;
+            background-position: right; 
+            background-size: auto 100%;
+            */
         }
 
         @keyframes roll {
@@ -170,20 +275,16 @@
                 transform: rotate(0deg);
             }
 
-            2% {
+            6% {
                 transform: rotate(-10deg);
             }
             
-            20% {
+            90% {
                 transform: rotate(740deg);
             }
 
-            22% {
-                transform: rotate(715deg);
-            }
-
-            24% {
-                transform: rotate(720deg);
+            95% {
+                transform: rotate(710deg);
             }
 
             to {
@@ -194,12 +295,12 @@
 </head>
 <body>
     <article>
-        <div id="logo"><img src="LogoInfusion-Etiquette.png" alt=""></div>
+        <div id="logo"><img src="TasseHD_02.png" alt=""></div>
         <div id="bandeau-wrapper">
             <div id="bandeau">
                 <div id="metabloc">
                     <div id="metadata">
-                        <div id="info" class="metadata">Sitram il devrait aller dodo surtout</div>
+                        <span id="info">[PLACEHOLDER]</span>
                     </div>
                 </div>
                 <div id="side"><img src="PanelSide.png" alt=""></div>
